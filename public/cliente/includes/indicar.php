@@ -1,10 +1,10 @@
 
 <div class="starter-template">
-	<form class="form-group" action="">
+	<form class="form-group" action="" method="POST">
 	    <h1>Indicar contato de origem</h1>
 	    <br>
 	    <h2 class="lead mb-5">Aqui você poderá indicar outro cliente como seu contato de origem!</h2>
-		<select class="custom-select mb-4">
+		<select class="custom-select mb-4" name="contato">
 			<option selected value="0">Selecione um contato</option>
 			<?php
 				

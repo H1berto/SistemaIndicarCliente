@@ -59,7 +59,7 @@
 
      <?php
 
-
+     
      require (isset($_GET['p'])) ? 'includes/'.$_GET['p'].'.php':'includes/home.php';
 
      ?>
