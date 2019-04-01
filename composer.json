@@ -2,7 +2,10 @@
 	"autoload":{
 		"psr-4":{
 			"app\\":"app/",
-			"config\\":"config/"
+			"config\\":"config/",
+			"assets\\":"assets/",
+			"config\\":"config/",
+			"public\\":"public/"
 		}
 	
 	}
