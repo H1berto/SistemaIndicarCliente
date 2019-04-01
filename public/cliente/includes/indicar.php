@@ -1,6 +1,7 @@
 <?php 
+
 	if (!is_null($_SESSION['usercontato'])) { 
-        header("location: ../index.php?p=indicado");
+        header("location: ../index.php");
     }
 	use app\controllers\ClienteDAO;
   	require_once '../../vendor/autoload.php';
@@ -14,7 +15,7 @@
         $response=$dao->indicarContato();
         if($response){
           $_SESSION['usercontato']=$contato;		
-          header("location: ../index.php?p=indicado");
+          header('Refresh:0');
         }
     }
  ?>

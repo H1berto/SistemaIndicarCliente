@@ -1,6 +1,7 @@
 <?php 
+
 	if (is_null($_SESSION['usercontato'])) { 
-        header("location: ../index.php?p=indicar");
+        header("location: ../index.php?");
     }
 	use app\controllers\ClienteDAO;
   	require_once '../../vendor/autoload.php';

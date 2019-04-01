@@ -34,7 +34,7 @@ class ClienteDAO extends Cliente{
 	 * [Função de login]
 	 * @return [type] [description]
 	 */
-	function login(){
+	public function login(){
 		
 		$this->setSenha($this->crip());
 		$email = $this->getEmail();
@@ -83,30 +83,46 @@ class ClienteDAO extends Cliente{
 	 * @param $senha [é o senha do objeto Usuario]
 	 * @return $newuser [retorna um objeto Usuario com as informações do banco de dados]
 	 */
-	function cadastrar(){
+	function cadastro(){
 		//variaveis padrões para cadastro
-		$this->_setSenha($this->crip());
-		$this->_setNome(ucfirst($this->getNome()));
-		$newuser= array();
+		$this->setSenha($this->crip());
+		$this->setNome(ucfirst($this->getNome()));
+		$nome =$this->getNome();
+		$email=$this->getEmail();
+		$senha=$this->getSenha();
+		$newuser=null;
 		try{
 
-			$presql =DB::getConn()->prepare("SELECT `id` FROM `cliente` WHERE `email`=:email");
-			$presql->bindParam(':email',$this->getEmail());
+			$presql =DB::getConn()->prepare("SELECT `idCliente` FROM `cliente` WHERE `email`=:email");
+			$presql->bindParam(':email',$email);
 	        $presql->execute();
 
 	        if($presql->rowCount()>=1){
 	            //Já existe um usuario com esse email
-	            $newuser= "ready";
+	            $newuser= false;
 			}else{
 
 			    $sqln = DB::getConn()->prepare("INSERT INTO `cliente` SET  `nome`=:nome, `email`=:email, `senha`=:senha");
-			    $sqln->bindParam(':nome',$this->getNome());
-			    $sqln->bindParam(':email',$this->getEmail());
-			    $sqln->bindParam(':senha',$this->getSenha());
+			    $sqln->bindParam(':nome',$nome);
+			    $sqln->bindParam(':email',$email);
+			    $sqln->bindParam(':senha',$senha);
 			    $sqln->execute();
 			    if ($sqln->rowCount()>=1) {	
-					//Usuario cadastrado com sucesso	
-					$newuser= "true";
+
+					$sqlu = DB::getConn()->prepare("SELECT * FROM cliente WHERE email=:email AND senha=:senha");
+					$sqlu->bindParam(':email',$email);
+					$sqlu->bindParam(':senha',$senha);
+					$sqlu->execute();
+			
+					if($sqlu->rowCount()==1){
+
+						while ($data = $sqlu->fetch(PDO::FETCH_ASSOC)) {
+					
+							$newuser=$data;
+							// var_dump($user);
+					
+						}
+					}
 				}       	
 			}
 
