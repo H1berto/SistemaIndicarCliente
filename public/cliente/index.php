@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  use app\controllers\ClienteDAO;
+  require_once '../../vendor/autoload.php';
+  if(!isset($_SESSION['userid'])){
+      header("location:../index.php");
+      die();
+  }
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,7 +28,7 @@
   <body cz-shortcut-listen="true">
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="https://getbootstrap.com/docs/4.1/examples/starter-template/#">Navbar</a>
+      <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -36,9 +46,9 @@
         </ul>
         <ul class="navbar-nav mr-4">
            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Conta</a>
+            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Conta</a>
             <div class="dropdown-menu" aria-labelledby="dropdown03">
-              <a class="dropdown-item" href="https://getbootstrap.com/docs/4.1/examples/navbars/#">Sair</a>
+              <a class="dropdown-item" href="logout.php">Sair</a>
             </div>
           </li>
         </ul>

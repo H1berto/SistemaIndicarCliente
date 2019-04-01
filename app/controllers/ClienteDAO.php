@@ -2,52 +2,50 @@
 
 namespace app\controllers;
 
-use Config\Database\DB;
-use App\Models\Cliente;
+use config\database\DB;
+use app\models\Cliente;
+use PDO;
 /**
  * 
  */
 class ClienteDAO extends Cliente{
 	
 	/**
-	 * [mostrarClientes description]
+	 * [Função para mostrar clientes]
 	 * @return [type] [description]
 	 */
-	public function mostrarClientes(){
+	public function mostrarClientes($id){
 		try{
-			$query = "SELECT * FROM cliente";
-			$pdo=DB::getConn()->prepare($query);
+			$idCliente=$id;
+			$pdo=DB::getConn()->prepare("SELECT * FROM cliente WHERE idCliente != :idCliente");
+			$pdo->bindParam(':idCliente',$idCliente);
 			$pdo->execute();
 			if($pdo->rowCount()>=1){
-
-				while ($data = $pdo->fetchAll()) {
-					
-					$user=$data;
-					
-					return $user;
-					
-				}
+					$user=$pdo;
 			}	
 
 		}catch(PDOException $e){
 			dump($e->getMessage());
 		}
+		return $user;
 	}
 
 	/**
-	 * [login description]
+	 * [Função de login]
 	 * @return [type] [description]
 	 */
 	function login(){
 		
-		$this->_setSenha($this->crip());
+		$this->setSenha($this->crip());
+		$email = $this->getEmail();
+		$senha = $this->getSenha();
 		$user = null;
 		
 		try{
 
 			$sqlu = DB::getConn()->prepare("SELECT * FROM cliente WHERE email=:email AND senha=:senha");
-			$sqlu->bindParam(':email',$this->getEmail());
-			$sqlu->bindParam(':senha',$this->getSenha());
+			$sqlu->bindParam(':email',$email);
+			$sqlu->bindParam(':senha',$senha);
 			$sqlu->execute();
 			
 			if($sqlu->rowCount()==1){
@@ -78,8 +76,8 @@ class ClienteDAO extends Cliente{
 	}
 	
 	/**
-	 * REQUEST METHOD POST(testes estão em GET)
-	 * Função para cadastro de um usuario
+	
+	 * [Função para cadastro de um usuario]
 	 * @param $nome [é o nome do objeto Usuario]
 	 * @param $email [é o email do objeto Usuario]
 	 * @param $senha [é o senha do objeto Usuario]
@@ -157,21 +155,15 @@ class ClienteDAO extends Cliente{
 	public function verificarContato(){
 
 		try{
+			$contato =false;
 			$query = "SELECT idClienteOrigem FROM cliente WHERE idCliente=:idCliente";
 			$pdo=DB::getConn()->prepare($query);
 			$pdo->bindParam(':idCliente',$this->getIdCliente());
 			$pdo->execute();
 			if($pdo->rowCount()>=1){
-
-				while ($data = $pdo->fetchAll()) {
-					
-					$user=$data;
-					
-					return $user;
-					
-				}
+				$contato = true;
 			}	
-
+			return $contato;
 		}catch(PDOException $e){
 			dump($e->getMessage());
 		}

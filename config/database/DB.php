@@ -1,6 +1,6 @@
 <?php
-namespace Config\Database;
-
+namespace config\database;
+use PDO;
 class DB{
 	private static $conn;
 		
