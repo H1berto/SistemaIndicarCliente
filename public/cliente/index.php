@@ -13,7 +13,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+ 
     <title>Tela Inicial</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/starter-template/">
@@ -59,9 +59,17 @@
 
      <?php
 
-     
-     require (isset($_GET['p'])) ? 'includes/'.$_GET['p'].'.php':'includes/home.php';
-
+     if (isset($_GET['p'])) {
+       if ($_GET['p']=='indicar') {
+         if (!is_null($_SESSION['usercontato'])) { 
+            $_GET['p']='indicado';
+         }
+       }
+       require 'includes/'.$_GET['p'].'.php';
+     }else{
+       require 'includes/home.php';
+     }
+    
      ?>
       
 

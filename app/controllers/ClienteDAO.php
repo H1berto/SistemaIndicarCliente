@@ -122,50 +122,42 @@ class ClienteDAO extends Cliente{
 	 * @param $contato [é o nome do objeto Usuario]
 	 * @return $newuser [retorna um objeto Usuario com as informações do banco de dados]
 	 */
-	function indicarContato($idcontato){
-		
-		$newuser= array();
+	function indicarContato(){
+		$idCliente = $this->getIdCliente();
+		$idClienteOrigem = $this->getIdClienteOrigem();
+		$indicado=false;
 		try{
 
-			$presql =DB::getConn()->prepare("SELECT idClienteOrigem FROM cliente WHERE idCliente = :idcliente");
-			$presql->bindParam(':idCliente',$this->getIdCliente());
-	        $presql->execute();
-
-	        if($presql->rowCount()>=1){
-	            //Já existe um usuario com esse email
-	            $newuser= "ready";
-			}else{
-
-			    $sqln = DB::getConn()->prepare("UPDATE `cliente` SET idClienteOrigem= :idcontato WHERE idCliente=:idCliente;");
-			    $sqln->bindParam(':idClienteOrigem',$this->getIdClienteOrigem());
-			    $sqln->bindParam(':idCliente',$this->getIdCliente());
+			    $sqln = DB::getConn()->prepare("UPDATE `cliente` SET idClienteOrigem= :idClienteOrigem WHERE idCliente=:idCliente;");
+			    $sqln->bindParam(':idClienteOrigem',$idClienteOrigem);
+			    $sqln->bindParam(':idCliente',$idCliente);
 			    $sqln->execute();
 			    if ($sqln->rowCount()>=1) {	
 					//Usuario cadastrado com sucesso	
-					$newuser= "true";
+					$indicado= true;
 				}       	
-			}
+			
 
 		}catch(PDOException $e){
 			logErros($e);
 		}
-		return $newuser;
+		return $indicado;
 	}
 
-	public function verificarContato(){
-
+	public function verificarContato($id){
 		try{
-			$contato =false;
-			$query = "SELECT idClienteOrigem FROM cliente WHERE idCliente=:idCliente";
+			
+			$query = "SELECT o.nome, o.email FROM cliente AS c JOIN cliente AS o ON c.idClienteOrigem = o.idCliente WHERE c.idCliente = :idCliente";
 			$pdo=DB::getConn()->prepare($query);
-			$pdo->bindParam(':idCliente',$this->getIdCliente());
+			$pdo->bindParam(':idCliente',$id);
 			$pdo->execute();
 			if($pdo->rowCount()>=1){
-				$contato = true;
+				$contato=$pdo;
 			}	
-			return $contato;
+			
 		}catch(PDOException $e){
 			dump($e->getMessage());
 		}
+		return $contato;
 	}
 }

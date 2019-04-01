@@ -14,7 +14,7 @@
         if(!is_null($response)){
           $_SESSION['username'] = $response["nome"];
           $_SESSION['userid'] = $response['idCliente'];
-          $_SESSION['usercontato']=$response['idClienteOrigem']
+          $_SESSION['usercontato']=$response['idClienteOrigem'];
           header("location: cliente/index.php");
         }
     }

@@ -1,3 +1,11 @@
+<?php 
+	if (is_null($_SESSION['usercontato'])) { 
+        header("location: ../index.php?p=indicar");
+    }
+	use app\controllers\ClienteDAO;
+  	require_once '../../vendor/autoload.php';
+    $dao = new ClienteDAO;
+ ?>
 <div class="starter-template">
 	<form class="form-group" action="">
 	    <h1>Indicar contato de origem</h1>
@@ -7,11 +15,19 @@
   			<div class="card-body">
     			<h2>Contato:</h2>
     			<p>
-    				<b>Nome:</b> 2berto da Silva Barone<br>
-    				<b>Email:</b> 2berto@gmail.com
+    			<?php
+				
+			
+                $idAtual =$_SESSION['userid'];
+        		$response=$dao->verificarContato($idAtual);                                  
+                while($contato = $response->fetch(PDO::FETCH_ASSOC)){?>
+                	<b>Nome:</b><?php echo $contato['nome']?><br>
+    				<b>Email:</b><?php echo $contato['email']?>
+            	<?php }?>
+    				
     			</p>
  			 </div>
 		</div>
-		<button class="btn btn-lg btn-primary" type="submit">Indicar</button>
+		
 	</form>
 </div>

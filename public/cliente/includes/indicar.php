@@ -1,4 +1,23 @@
+<?php 
+	if (!is_null($_SESSION['usercontato'])) { 
+        header("location: ../index.php?p=indicado");
+    }
+	use app\controllers\ClienteDAO;
+  	require_once '../../vendor/autoload.php';
+    $dao = new ClienteDAO;
 
+   //indicar
+  if (isset($_POST['contato'])&&$_POST['contato']!=0){    
+        $contato =$_POST['contato'];
+        $dao->setIdCliente($_SESSION['userid']);
+        $dao->setIdClienteOrigem($contato);
+        $response=$dao->indicarContato();
+        if($response){
+          $_SESSION['usercontato']=$contato;		
+          header("location: ../index.php?p=indicado");
+        }
+    }
+ ?>
 <div class="starter-template">
 	<form class="form-group" action="" method="POST">
 	    <h1>Indicar contato de origem</h1>
@@ -8,9 +27,7 @@
 			<option selected value="0">Selecione um contato</option>
 			<?php
 				
-				use app\controllers\ClienteDAO;
-  				require_once '../../vendor/autoload.php';
-                $dao = new ClienteDAO;
+			
                 $idAtual =$_SESSION['userid'];
         		$response=$dao->mostrarClientes($idAtual);                                  
                 while($contatos = $response->fetch(PDO::FETCH_ASSOC)){?>
